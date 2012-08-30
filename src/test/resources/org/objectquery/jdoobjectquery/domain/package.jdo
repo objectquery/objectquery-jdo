@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <!DOCTYPE jdo SYSTEM "http://java.sun.com/dtd/jdo_1_0.dtd">
+ <!DOCTYPE jdo SYSTEM "http://java.sun.com/dtd/jdo_3_0.dtd">
 
 <jdo>
 	<package name="org.objectquery.jdoobjectquery.domain">
-		<class name="Dog"></class>
-		<class name="Home"></class>
-		<class name="Person"></class>
+		<class name="Dog">
+			<inheritance strategy="new-table"></inheritance>
+		</class>
+		<class name="Home">
+			<inheritance strategy="new-table"></inheritance>
+		</class>
+		<class name="Person">
+			<inheritance strategy="new-table"></inheritance>
+		</class>
 	</package>
 </jdo>

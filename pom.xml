@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>jdoobjectquery</name>
-	<url>http://maven.apache.org</url>
+	<url>http://www.objectquery.org</url>
 
 
 	<properties>
@@ -39,13 +39,13 @@
 		<dependency>
 			<groupId>org.datanucleus</groupId>
 			<artifactId>datanucleus-core</artifactId>
-			<version>3.0.8</version>
+			<version>3.0.0-release</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.datanucleus</groupId>
 			<artifactId>datanucleus-rdbms</artifactId>
-			<version>3.0.8</version>
+			<version>3.0.0-release</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -57,7 +57,7 @@
 		<dependency>
 			<groupId>org.datanucleus</groupId>
 			<artifactId>datanucleus-api-jdo</artifactId>
-			<version>3.0.8</version>
+			<version>3.0.0-release</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -66,7 +66,7 @@
 			<plugin>
 				<groupId>org.datanucleus</groupId>
 				<artifactId>maven-datanucleus-plugin</artifactId>
-				<version>3.1.0-m3</version>
+				<version>3.0.0-release</version>
 				<configuration>
 					<metadataDirectory>${project.build.testOutputDirectory}</metadataDirectory>
 					<persistenceUnitName>test</persistenceUnitName>
@@ -88,12 +88,12 @@
 					<dependency>
 						<groupId>org.datanucleus</groupId>
 						<artifactId>datanucleus-core</artifactId>
-						<version>3.0.4</version>
+						<version>3.0.0-release</version>
 					</dependency>
 					<dependency>
 						<groupId>org.datanucleus</groupId>
 						<artifactId>datanucleus-api-jdo</artifactId>
-						<version>3.0.8</version>
+						<version>3.0.0-release</version>
 					</dependency>
 				</dependencies>
 			</plugin>

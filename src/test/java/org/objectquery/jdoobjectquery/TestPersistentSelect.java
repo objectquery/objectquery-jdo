@@ -31,8 +31,8 @@ public class TestPersistentSelect {
 
 		JDOQLQueryGenerator qg = JDOObjectQuery.jdoqlGenerator(qp);
 		Query query= peristenceManager.newQuery(qg.getQuery());
-		
-		List<Person> res =(List<Person>)query.execute(qg.getParamenters()); 
+		query.setClass(Person.class);
+		List<Person> res =(List<Person>)query.executeWithMap(qg.getParamenters()); 
 		Assert.assertEquals(1, res.size());
 		Assert.assertEquals(res.get(0).getName(), "tom");
 	}
