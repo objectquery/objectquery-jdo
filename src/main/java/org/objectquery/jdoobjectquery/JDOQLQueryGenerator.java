@@ -1,6 +1,7 @@
 package org.objectquery.jdoobjectquery;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +13,10 @@ import org.objectquery.builder.ConditionItem;
 import org.objectquery.builder.ConditionType;
 import org.objectquery.builder.GenericInternalQueryBuilder;
 import org.objectquery.builder.GenericObjectQuery;
+import org.objectquery.builder.GroupType;
+import org.objectquery.builder.ObjectQueryException;
 import org.objectquery.builder.Order;
+import org.objectquery.builder.OrderType;
 import org.objectquery.builder.PathItem;
 import org.objectquery.builder.Projection;
 import org.objectquery.builder.ProjectionType;
@@ -39,22 +43,32 @@ public class JDOQLQueryGenerator {
 					builder.append(" ) ");
 				}
 				if (eli.hasNext()) {
-					builder.append(" ").append(group.getType().toString()).append(" ");
+					builder.append(getGroupType(group.getType()));
 				}
 			}
 		}
 	}
 
+	private String getGroupType(GroupType type) {
+		switch (type) {
+		case AND:
+			return " && ";
+		case OR:
+			return " || ";
+		}
+		return "";
+	}
+
 	private String getConditionType(ConditionType type) {
 		switch (type) {
 		case CONTAINS:
-			return " member of ";
+			break;
 		case EQUALS:
 			return " == ";
 		case IN:
-			return " in ";
+			break;
 		case LIKE:
-			return " like ";
+			break;
 		case MAX:
 			return " > ";
 		case MIN:
@@ -64,13 +78,13 @@ public class JDOQLQueryGenerator {
 		case MIN_EQUALS:
 			return " <= ";
 		case NOT_CONTAINS:
-			return " not member of ";
+			break;
 		case NOT_EQUALS:
-			return " <> ";
+			return " != ";
 		case NOT_IN:
-			return " not in ";
+			break;
 		case NOT_LIKE:
-			return "not like";
+			break;
 		}
 		return "";
 	}
@@ -99,26 +113,47 @@ public class JDOQLQueryGenerator {
 	private void stringfyCondition(ConditionItem cond, StringBuilder sb) {
 
 		if (cond.getType().equals(ConditionType.CONTAINS) || cond.getType().equals(ConditionType.NOT_CONTAINS)) {
+			if (cond.getType().equals(ConditionType.NOT_CONTAINS))
+				sb.append("!");
+			buildName(cond.getItem(), sb);
+			sb.append(".contains(");
 			if (cond.getValue() instanceof PathItem) {
 				buildName((PathItem) cond.getValue(), sb);
 			} else {
-				sb.append(":");
 				sb.append(buildParameterName(cond));
 			}
-			sb.append(" ").append(getConditionType(cond.getType())).append(" ");
+			sb.append(")");
+		} else if (cond.getType().equals(ConditionType.IN) || cond.getType().equals(ConditionType.NOT_IN)) {
+			if (cond.getType().equals(ConditionType.NOT_IN))
+				sb.append("!");
+			if (cond.getValue() instanceof PathItem) {
+				buildName((PathItem) cond.getValue(), sb);
+			} else {
+				sb.append(buildParameterName(cond));
+			}
+			sb.append(".contains(");
 			buildName(cond.getItem(), sb);
+			sb.append(")");
+		} else if (cond.getType().equals(ConditionType.LIKE) || cond.getType().equals(ConditionType.NOT_LIKE)) {
+			if (cond.getType().equals(ConditionType.NOT_LIKE))
+				sb.append("!");
+			buildName(cond.getItem(), sb);
+			sb.append(".matches(");
+			if (cond.getValue() instanceof PathItem) {
+				buildName((PathItem) cond.getValue(), sb);
+			} else {
+				sb.append(buildParameterName(cond));
+			}
+			sb.append(")");
 		} else {
 			buildName(cond.getItem(), sb);
 			sb.append(" ").append(getConditionType(cond.getType())).append(" ");
-			if (cond.getType().equals(ConditionType.IN) || cond.getType().equals(ConditionType.NOT_IN))
-				sb.append("(");
 			if (cond.getValue() instanceof PathItem) {
 				buildName((PathItem) cond.getValue(), sb);
 			} else {
 				sb.append(buildParameterName(cond));
 			}
-			if (cond.getType().equals(ConditionType.IN) || cond.getType().equals(ConditionType.NOT_IN))
-				sb.append(")");
+
 		}
 	}
 
@@ -170,8 +205,13 @@ public class JDOQLQueryGenerator {
 			Iterator<Map.Entry<String, Object>> parami = parameters.entrySet().iterator();
 			while (parami.hasNext()) {
 				Map.Entry<String, Object> param = parami.next();
-				if (param.getValue() != null)
-					builder.append(param.getValue().getClass().getSimpleName()).append(" ").append(param.getKey());
+				if (param.getValue() != null) {
+					if (Collection.class.isAssignableFrom(param.getValue().getClass()))
+						builder.append("java.util.Collection");
+					else
+						builder.append(param.getValue().getClass().getSimpleName());
+					builder.append(" ").append(param.getKey());
+				}
 				if (parami.hasNext())
 					builder.append(",");
 			}
@@ -206,15 +246,25 @@ public class JDOQLQueryGenerator {
 					builder.append(" ").append(resolveFunction(ord.getProjectionType())).append("(");
 				buildName(ord.getItem(), builder);
 				if (ord.getProjectionType() != null)
-					builder.append(")");
+					throw new ObjectQueryException("Unsupported operation count in order by clause by jdoql", null);
 				if (ord.getType() != null)
-					builder.append(" ").append(ord.getType());
+					builder.append(" ").append(getOrderType(ord.getType()));
 				if (orders.hasNext())
 					builder.append(',');
 			}
 		}
 
 		this.query = builder.toString();
+	}
+
+	public String getOrderType(OrderType type) {
+		switch (type) {
+		case ASC:
+			return "ascending";
+		case DESC:
+			return "descending";
+		}
+		return "";
 	}
 
 	private void buildParameterName(ConditionItem conditionItem, StringBuilder builder) {
