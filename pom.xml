@@ -43,7 +43,7 @@
 		<dependency>
 			<groupId>org.objectquery</groupId>
 			<artifactId>objectquery</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -115,4 +115,9 @@
 
 		</plugins>
 	</build>
+	<scm>
+		<url>git@github.com:objectquery/jdoobjectquery.git</url>
+		<connection>scm:git:git@github.com:objectquery/jdoobjectquery.git</connection>
+		<developerConnection>scm:git:git@github.com:objectquery/jdoobjectquery.git</developerConnection>
+	</scm>
 </project>

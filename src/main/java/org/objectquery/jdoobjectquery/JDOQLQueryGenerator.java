@@ -7,19 +7,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.objectquery.builder.ConditionElement;
-import org.objectquery.builder.ConditionGroup;
-import org.objectquery.builder.ConditionItem;
-import org.objectquery.builder.ConditionType;
-import org.objectquery.builder.GenericInternalQueryBuilder;
-import org.objectquery.builder.GenericObjectQuery;
-import org.objectquery.builder.GroupType;
-import org.objectquery.builder.ObjectQueryException;
-import org.objectquery.builder.Order;
-import org.objectquery.builder.OrderType;
-import org.objectquery.builder.PathItem;
-import org.objectquery.builder.Projection;
-import org.objectquery.builder.ProjectionType;
+import org.objectquery.generic.ConditionElement;
+import org.objectquery.generic.ConditionGroup;
+import org.objectquery.generic.ConditionItem;
+import org.objectquery.generic.ConditionType;
+import org.objectquery.generic.GenericInternalQueryBuilder;
+import org.objectquery.generic.GenericObjectQuery;
+import org.objectquery.generic.GroupType;
+import org.objectquery.generic.ObjectQueryException;
+import org.objectquery.generic.Order;
+import org.objectquery.generic.OrderType;
+import org.objectquery.generic.PathItem;
+import org.objectquery.generic.Projection;
+import org.objectquery.generic.ProjectionType;
 
 public class JDOQLQueryGenerator {
 

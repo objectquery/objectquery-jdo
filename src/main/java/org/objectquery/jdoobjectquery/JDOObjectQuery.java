@@ -3,9 +3,9 @@ package org.objectquery.jdoobjectquery;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import org.objectquery.builder.GenericObjectQuery;
-import org.objectquery.builder.ObjectQuery;
-import org.objectquery.builder.ObjectQueryException;
+import org.objectquery.ObjectQuery;
+import org.objectquery.generic.GenericObjectQuery;
+import org.objectquery.generic.ObjectQueryException;
 
 public class JDOObjectQuery {
 

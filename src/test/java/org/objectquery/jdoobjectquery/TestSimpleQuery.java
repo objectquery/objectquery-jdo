@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.objectquery.builder.GenericObjectQuery;
-import org.objectquery.builder.ObjectQuery;
-import org.objectquery.builder.OrderType;
-import org.objectquery.builder.ProjectionType;
+import org.objectquery.ObjectQuery;
+import org.objectquery.generic.GenericObjectQuery;
+import org.objectquery.generic.OrderType;
+import org.objectquery.generic.ProjectionType;
 import org.objectquery.jdoobjectquery.domain.Home;
 import org.objectquery.jdoobjectquery.domain.Person;
 
