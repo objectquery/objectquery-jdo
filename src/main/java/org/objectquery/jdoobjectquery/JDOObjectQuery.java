@@ -19,6 +19,6 @@ public class JDOObjectQuery {
 		JDOQLQueryGenerator qg = JDOObjectQuery.jdoqlGenerator(objectQuery);
 		Query query = persistenceManager.newQuery(qg.getQuery());
 		query.setClass(((GenericObjectQuery<?>) objectQuery).getTargetClass());
-		return query.executeWithMap(qg.getParamenters());
+		return query.executeWithMap(qg.getParameters());
 	}
 }
