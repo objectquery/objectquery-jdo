@@ -118,11 +118,14 @@ public class TestPersistentSelect {
 		Person target = qp.target();
 		qp.eq(target.getName(), "tom");
 		qp.like(target.getName(), "tom");
+		qp.notLike(target.getName(), "tom");
 		qp.max(target.getName(), "tom");
 		qp.min(target.getName(), "tom");
 		qp.maxEq(target.getName(), "tom");
 		qp.minEq(target.getName(), "tom");
 		qp.notEq(target.getName(), "tom");
+		qp.likeNc(target.getName(), "tom");
+		qp.notLikeNc(target.getName(), "tom");
 		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, peristenceManager);
 		Assert.assertEquals(0, res.size());
 

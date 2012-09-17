@@ -2,8 +2,8 @@ package org.objectquery.jdoobjectquery;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +23,7 @@ import org.objectquery.generic.ProjectionType;
 
 public class JDOQLQueryGenerator {
 
-	private Map<String, Object> parameters = new HashMap<String, Object>();
+	private Map<String, Object> parameters = new LinkedHashMap<String, Object>();
 	private String query;
 
 	JDOQLQueryGenerator(GenericObjectQuery<?> jpqlObjectQuery) {
@@ -85,6 +85,10 @@ public class JDOQLQueryGenerator {
 			break;
 		case NOT_LIKE:
 			break;
+		case LIKE_NOCASE:
+			break;
+		case NOT_LIKE_NOCASE:
+			break;
 		}
 		return "";
 	}
@@ -112,48 +116,46 @@ public class JDOQLQueryGenerator {
 
 	private void stringfyCondition(ConditionItem cond, StringBuilder sb) {
 
-		if (cond.getType().equals(ConditionType.CONTAINS) || cond.getType().equals(ConditionType.NOT_CONTAINS)) {
-			if (cond.getType().equals(ConditionType.NOT_CONTAINS))
+		ConditionType type = cond.getType();
+		if (type.equals(ConditionType.CONTAINS) || type.equals(ConditionType.NOT_CONTAINS)) {
+			if (type.equals(ConditionType.NOT_CONTAINS))
 				sb.append("!");
 			buildName(cond.getItem(), sb);
 			sb.append(".contains(");
-			if (cond.getValue() instanceof PathItem) {
-				buildName((PathItem) cond.getValue(), sb);
-			} else {
-				sb.append(buildParameterName(cond));
-			}
+			conditionValue(cond, sb);
 			sb.append(")");
-		} else if (cond.getType().equals(ConditionType.IN) || cond.getType().equals(ConditionType.NOT_IN)) {
-			if (cond.getType().equals(ConditionType.NOT_IN))
+		} else if (type.equals(ConditionType.IN) || type.equals(ConditionType.NOT_IN)) {
+			if (type.equals(ConditionType.NOT_IN))
 				sb.append("!");
-			if (cond.getValue() instanceof PathItem) {
-				buildName((PathItem) cond.getValue(), sb);
-			} else {
-				sb.append(buildParameterName(cond));
-			}
+			conditionValue(cond, sb);
 			sb.append(".contains(");
 			buildName(cond.getItem(), sb);
 			sb.append(")");
-		} else if (cond.getType().equals(ConditionType.LIKE) || cond.getType().equals(ConditionType.NOT_LIKE)) {
-			if (cond.getType().equals(ConditionType.NOT_LIKE))
+		} else if (type.equals(ConditionType.LIKE) || type.equals(ConditionType.NOT_LIKE) || type.equals(ConditionType.LIKE_NOCASE)
+				|| type.equals(ConditionType.NOT_LIKE_NOCASE)) {
+			if (type.equals(ConditionType.NOT_LIKE) || type.equals(ConditionType.NOT_LIKE_NOCASE))
 				sb.append("!");
 			buildName(cond.getItem(), sb);
+			if (type.equals(ConditionType.LIKE_NOCASE) || type.equals(ConditionType.NOT_LIKE_NOCASE))
+				sb.append(".toUpperCase()");
 			sb.append(".matches(");
-			if (cond.getValue() instanceof PathItem) {
-				buildName((PathItem) cond.getValue(), sb);
-			} else {
-				sb.append(buildParameterName(cond));
-			}
+			conditionValue(cond, sb);
+			if (type.equals(ConditionType.LIKE_NOCASE) || type.equals(ConditionType.NOT_LIKE_NOCASE))
+				sb.append(".toUpperCase()");
 			sb.append(")");
 		} else {
 			buildName(cond.getItem(), sb);
-			sb.append(" ").append(getConditionType(cond.getType())).append(" ");
-			if (cond.getValue() instanceof PathItem) {
-				buildName((PathItem) cond.getValue(), sb);
-			} else {
-				sb.append(buildParameterName(cond));
-			}
+			sb.append(" ").append(getConditionType(type)).append(" ");
+			conditionValue(cond, sb);
 
+		}
+	}
+
+	private void conditionValue(ConditionItem cond, StringBuilder sb) {
+		if (cond.getValue() instanceof PathItem) {
+			buildName((PathItem) cond.getValue(), sb);
+		} else {
+			sb.append(buildParameterName(cond));
 		}
 	}
 

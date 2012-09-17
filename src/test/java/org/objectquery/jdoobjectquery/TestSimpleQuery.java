@@ -49,7 +49,7 @@ public class TestSimpleQuery {
 		qp.eq(target.getDud().getName(), "tom3");
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.dog.name  ==  param_dog_name && A.dud.name  ==  param_dud_name PARAMETERS String param_dud_name,String param_dog_name",
+				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.dog.name  ==  param_dog_name && A.dud.name  ==  param_dud_name PARAMETERS String param_dog_name,String param_dud_name",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -138,11 +138,13 @@ public class TestSimpleQuery {
 		qp.minEq(target.getName(), "tom");
 		qp.notEq(target.getName(), "tom");
 		qp.notLike(target.getName(), "tom");
+		qp.likeNc(target.getName(), "tom");
+		qp.notLikeNc(target.getName(), "tom");
 
 		Assert.assertEquals(
 				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.name  ==  param_name && A.name.matches(param_name1) && A.name  >  param_name2 && "
-						+ "A.name  <  param_name3 && A.name  >=  param_name4 && A.name  <=  param_name5 && A.name  !=  param_name6 && !A.name.matches(param_name7) "
-						+ "PARAMETERS String param_name7,String param_name6,String param_name5,String param_name,String param_name4,String param_name3,String param_name2,String param_name1",
+						+ "A.name  <  param_name3 && A.name  >=  param_name4 && A.name  <=  param_name5 && A.name  !=  param_name6 && !A.name.matches(param_name7) && A.name.toUpperCase().matches(param_name8.toUpperCase()) && !A.name.toUpperCase().matches(param_name9.toUpperCase()) "
+						+ "PARAMETERS String param_name,String param_name1,String param_name2,String param_name3,String param_name4,String param_name5,String param_name6,String param_name7,String param_name8,String param_name9",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
