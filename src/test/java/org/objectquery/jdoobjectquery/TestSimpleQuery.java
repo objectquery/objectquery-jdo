@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.objectquery.ObjectQuery;
 import org.objectquery.generic.GenericObjectQuery;
+import org.objectquery.generic.ObjectQueryException;
 import org.objectquery.generic.OrderType;
 import org.objectquery.generic.ProjectionType;
 import org.objectquery.jdoobjectquery.domain.Home;
@@ -193,4 +194,19 @@ public class TestSimpleQuery {
 
 	}
 
+	@Test(expected = ObjectQueryException.class)
+	public void testProjectionGroupHaving() {
+
+		ObjectQuery<Home> qp = new GenericObjectQuery<Home>(Home.class);
+		Home target = qp.target();
+		qp.prj(target.getAddress());
+		qp.prj(qp.box(target.getPrice()), ProjectionType.MAX);
+		qp.order(target.getAddress());
+		qp.having(qp.box(target.getPrice()), ProjectionType.MAX).eq(0D);
+
+		Assert.assertEquals(
+				"select A.address, MAX(A.price) from org.objectquery.jdoobjectquery.domain.Home A PARAMETERS Double param_price group by A.address having MAX(A.price) == param_price order by A.address",
+				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
+
+	}
 }

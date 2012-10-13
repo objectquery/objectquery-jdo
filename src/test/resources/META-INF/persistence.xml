@@ -18,9 +18,10 @@
 			<property name="datanucleus.autoCreateTables" value="true" />
 			<property name="datanucleus.autoCreateSchema" value="true" />
 			<property name="datanucleus.autoCreateColumns" value="true" />
-			<property name="datanucleus.autoCreateConstraints" value="true" />
-
-
+			<property name="datanucleus.autoCreateConstraints" value="false" />
+			<property name="datanucleus.autoStartMechanism" value="Classes" />
+			<property name="datanucleus.autoStartClassNames"
+				value="org.objectquery.jdoobjectquery.domain.Person,org.objectquery.jdoobjectquery.domain.Dog,org.objectquery.jdoobjectquery.domain.Home" />
 		</properties>
 	</persistence-unit>
 </persistence>

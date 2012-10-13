@@ -218,6 +218,20 @@ public class TestPersistentSelect {
 		Assert.assertEquals((Double) res.get(2)[1], 0d, 0);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Test(expected = ObjectQueryException.class)
+	public void testSelectGroupHaving() {
+		GenericObjectQuery<Home> qp = new GenericObjectQuery<Home>(Home.class);
+		Home target = qp.target();
+		qp.prj(target.getAddress());
+		qp.prj(qp.box(target.getPrice()), ProjectionType.MAX);
+		qp.having(qp.box(target.getPrice()), ProjectionType.MAX).eq(1000000d);
+
+		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, peristenceManager);
+		Assert.assertEquals(1, res.size());
+		Assert.assertEquals((Double) res.get(0)[1], 1000000d, 0);
+	}
+
 	@After
 	public void afterTest() {
 		if (peristenceManager != null) {

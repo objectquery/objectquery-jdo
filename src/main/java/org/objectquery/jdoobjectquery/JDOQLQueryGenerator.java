@@ -100,14 +100,14 @@ public class JDOQLQueryGenerator {
 		GenericInternalQueryBuilder.buildPath(item, sb);
 	}
 
-	private String buildParameterName(ConditionItem cond) {
+	private String buildParameterName(PathItem item, Object value) {
 		StringBuilder name = new StringBuilder("param_");
-		buildParameterName(cond, name);
+		buildParameterName(item, name);
 		int i = 1;
 		String realName = name.toString();
 		do {
 			if (!parameters.containsKey(realName)) {
-				parameters.put(realName, cond.getValue());
+				parameters.put(realName, value);
 				return realName;
 			}
 			realName = name.toString() + i++;
@@ -155,7 +155,7 @@ public class JDOQLQueryGenerator {
 		if (cond.getValue() instanceof PathItem) {
 			buildName((PathItem) cond.getValue(), sb);
 		} else {
-			sb.append(buildParameterName(cond));
+			sb.append(buildParameterName(cond.getItem(), cond.getValue()));
 		}
 	}
 
@@ -169,6 +169,8 @@ public class JDOQLQueryGenerator {
 			return "MIN";
 		case COUNT:
 			return "COUNT";
+		case SUM:
+			return "SUM";
 		}
 		return "";
 	}
@@ -200,6 +202,23 @@ public class JDOQLQueryGenerator {
 		if (!query.getConditions().isEmpty()) {
 			builder.append(" where ");
 			stringfyGroup(query, builder);
+		}
+
+		StringBuilder havingBuilder = new StringBuilder();
+		if (!query.getHavings().isEmpty()) {
+			throw new ObjectQueryException("Operation not supported by jdo datastore", null);
+			/*
+			havingBuilder.append(" having");
+			Iterator<Having> havings = query.getHavings().iterator();
+			while (havings.hasNext()) {
+				Having having = havings.next();
+				havingBuilder.append(" ").append(resolveFunction(having.getProjectionType())).append('(');
+				buildName(having.getItem(), havingBuilder);
+				havingBuilder.append(')').append(getConditionType(having.getConditionType()));
+				havingBuilder.append(buildParameterName(having.getItem(), having.getValue()));
+				if (havings.hasNext())
+					havingBuilder.append(" ,");
+			}*/
 		}
 
 		if (!parameters.isEmpty()) {
@@ -238,6 +257,7 @@ public class JDOQLQueryGenerator {
 		} else if (orderGrouped && query.getProjections().isEmpty()) {
 			builder.append(" group by A ");
 		}
+		builder.append(havingBuilder);
 
 		if (!query.getOrders().isEmpty()) {
 			builder.append(" order by ");
@@ -269,8 +289,8 @@ public class JDOQLQueryGenerator {
 		return "";
 	}
 
-	private void buildParameterName(ConditionItem conditionItem, StringBuilder builder) {
-		GenericInternalQueryBuilder.buildPath(conditionItem.getItem(), builder, "_");
+	private void buildParameterName(PathItem conditionItem, StringBuilder builder) {
+		GenericInternalQueryBuilder.buildPath(conditionItem, builder, "_");
 	}
 
 	public Map<String, Object> getParameters() {

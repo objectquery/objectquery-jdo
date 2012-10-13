@@ -1,7 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
-
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
@@ -53,13 +52,13 @@
 		<dependency>
 			<groupId>org.datanucleus</groupId>
 			<artifactId>datanucleus-core</artifactId>
-			<version>3.0.0-release</version>
+			<version>3.1.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.datanucleus</groupId>
 			<artifactId>datanucleus-rdbms</artifactId>
-			<version>3.0.0-release</version>
+			<version>3.1.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -71,7 +70,7 @@
 		<dependency>
 			<groupId>org.datanucleus</groupId>
 			<artifactId>datanucleus-api-jdo</artifactId>
-			<version>3.0.0-release</version>
+			<version>3.1.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -80,7 +79,7 @@
 			<plugin>
 				<groupId>org.datanucleus</groupId>
 				<artifactId>maven-datanucleus-plugin</artifactId>
-				<version>3.0.0-release</version>
+				<version>3.1.1</version>
 				<configuration>
 					<metadataDirectory>${project.build.testOutputDirectory}</metadataDirectory>
 					<persistenceUnitName>test</persistenceUnitName>
@@ -102,12 +101,12 @@
 					<dependency>
 						<groupId>org.datanucleus</groupId>
 						<artifactId>datanucleus-core</artifactId>
-						<version>3.0.0-release</version>
+						<version>3.1.1</version>
 					</dependency>
 					<dependency>
 						<groupId>org.datanucleus</groupId>
 						<artifactId>datanucleus-api-jdo</artifactId>
-						<version>3.0.0-release</version>
+						<version>3.1.1</version>
 					</dependency>
 				</dependencies>
 			</plugin>
