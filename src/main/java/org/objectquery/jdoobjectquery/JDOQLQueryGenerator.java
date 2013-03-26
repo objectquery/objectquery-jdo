@@ -69,13 +69,13 @@ public class JDOQLQueryGenerator {
 			break;
 		case LIKE:
 			break;
-		case MAX:
+		case GREATER:
 			return " > ";
-		case MIN:
+		case LESS:
 			return " < ";
-		case MAX_EQUALS:
+		case GREATER_EQUALS:
 			return " >= ";
-		case MIN_EQUALS:
+		case LESS_EQUALS:
 			return " <= ";
 		case NOT_CONTAINS:
 			break;
@@ -190,7 +190,8 @@ public class JDOQLQueryGenerator {
 					grouped = true;
 				} else
 					groupby.add(proj);
-				buildName(proj.getItem(), builder);
+				if (proj.getItem() instanceof PathItem)
+					buildName((PathItem) proj.getItem(), builder);
 				if (proj.getType() != null)
 					builder.append(")");
 				if (projections.hasNext())
@@ -250,7 +251,8 @@ public class JDOQLQueryGenerator {
 			Iterator<Projection> projections = groupby.iterator();
 			while (projections.hasNext()) {
 				Projection proj = projections.next();
-				buildName(proj.getItem(), builder);
+				if (proj.getItem() instanceof PathItem)
+					buildName((PathItem) proj.getItem(), builder);
 				if (projections.hasNext())
 					builder.append(",");
 			}
@@ -266,7 +268,8 @@ public class JDOQLQueryGenerator {
 				Order ord = orders.next();
 				if (ord.getProjectionType() != null)
 					builder.append(" ").append(resolveFunction(ord.getProjectionType())).append("(");
-				buildName(ord.getItem(), builder);
+				if (ord.getItem() instanceof PathItem)
+					buildName((PathItem) ord.getItem(), builder);
 				if (ord.getProjectionType() != null)
 					throw new ObjectQueryException("Unsupported operation count in order by clause by jdoql", null);
 				if (ord.getType() != null)
