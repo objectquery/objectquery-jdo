@@ -27,7 +27,10 @@ public class JDOQLQueryGenerator {
 	private String query;
 
 	JDOQLQueryGenerator(GenericObjectQuery<?> jpqlObjectQuery) {
-		buildQuery(jpqlObjectQuery.getTargetClass(), (GenericInternalQueryBuilder) jpqlObjectQuery.getBuilder());
+		if (jpqlObjectQuery.getRootPathItem().getName() == null || jpqlObjectQuery.getRootPathItem().getName().isEmpty()) {
+			jpqlObjectQuery.getRootPathItem().setName("A");
+		}
+		buildQuery(jpqlObjectQuery.getTargetClass(), (GenericInternalQueryBuilder) jpqlObjectQuery.getBuilder(), jpqlObjectQuery.getRootPathItem().getName());
 	}
 
 	private void stringfyGroup(ConditionGroup group, StringBuilder builder) {
@@ -94,9 +97,6 @@ public class JDOQLQueryGenerator {
 	}
 
 	private void buildName(PathItem item, StringBuilder sb) {
-		sb.append("A");
-		if (item.getParent() != null)
-			sb.append(".");
 		GenericInternalQueryBuilder.buildPath(item, sb);
 	}
 
@@ -147,13 +147,14 @@ public class JDOQLQueryGenerator {
 			buildName(cond.getItem(), sb);
 			sb.append(" ").append(getConditionType(type)).append(" ");
 			conditionValue(cond, sb);
-
 		}
 	}
 
 	private void conditionValue(ConditionItem cond, StringBuilder sb) {
 		if (cond.getValue() instanceof PathItem) {
 			buildName((PathItem) cond.getValue(), sb);
+		} else if (cond.getValue() instanceof GenericObjectQuery<?>) {
+			buildSubquery(sb, (GenericObjectQuery<?>) cond.getValue());
 		} else {
 			sb.append(buildParameterName(cond.getItem(), cond.getValue()));
 		}
@@ -175,11 +176,32 @@ public class JDOQLQueryGenerator {
 		return "";
 	}
 
-	public void buildQuery(Class<?> clazz, GenericInternalQueryBuilder query) {
+	public void buildQuery(Class<?> clazz, GenericInternalQueryBuilder query, String alias) {
 		parameters.clear();
+		StringBuilder builder = new StringBuilder();
+		buildQueryString(clazz, query, builder, alias);
+		if (!parameters.isEmpty()) {
+			builder.append(" PARAMETERS ");
+			Iterator<Map.Entry<String, Object>> parami = parameters.entrySet().iterator();
+			while (parami.hasNext()) {
+				Map.Entry<String, Object> param = parami.next();
+				if (param.getValue() != null) {
+					if (Collection.class.isAssignableFrom(param.getValue().getClass()))
+						builder.append("java.util.Collection");
+					else
+						builder.append(param.getValue().getClass().getSimpleName());
+					builder.append(" ").append(param.getKey());
+				}
+				if (parami.hasNext())
+					builder.append(",");
+			}
+		}
+		this.query = builder.toString();
+	}
+
+	public void buildQueryString(Class<?> clazz, GenericInternalQueryBuilder query, StringBuilder builder, String alias) {
 		List<Projection> groupby = new ArrayList<Projection>();
 		boolean grouped = false;
-		StringBuilder builder = new StringBuilder();
 		builder.append("select ");
 		if (!query.getProjections().isEmpty()) {
 			Iterator<Projection> projections = query.getProjections().iterator();
@@ -192,14 +214,16 @@ public class JDOQLQueryGenerator {
 					groupby.add(proj);
 				if (proj.getItem() instanceof PathItem)
 					buildName((PathItem) proj.getItem(), builder);
+				else
+					buildSubquery(builder, (GenericObjectQuery<?>) proj.getItem());
 				if (proj.getType() != null)
 					builder.append(")");
 				if (projections.hasNext())
 					builder.append(",");
 			}
 		} else
-			builder.append("A");
-		builder.append(" from ").append(clazz.getName()).append(" A");
+			builder.append(alias);
+		builder.append(" from ").append(clazz.getName()).append(" ").append(alias);
 		if (!query.getConditions().isEmpty()) {
 			builder.append(" where ");
 			stringfyGroup(query, builder);
@@ -222,22 +246,6 @@ public class JDOQLQueryGenerator {
 			}*/
 		}
 
-		if (!parameters.isEmpty()) {
-			builder.append(" PARAMETERS ");
-			Iterator<Map.Entry<String, Object>> parami = parameters.entrySet().iterator();
-			while (parami.hasNext()) {
-				Map.Entry<String, Object> param = parami.next();
-				if (param.getValue() != null) {
-					if (Collection.class.isAssignableFrom(param.getValue().getClass()))
-						builder.append("java.util.Collection");
-					else
-						builder.append(param.getValue().getClass().getSimpleName());
-					builder.append(" ").append(param.getKey());
-				}
-				if (parami.hasNext())
-					builder.append(",");
-			}
-		}
 		boolean orderGrouped = false;
 		for (Order ord : query.getOrders()) {
 			if (ord.getProjectionType() != null) {
@@ -270,6 +278,8 @@ public class JDOQLQueryGenerator {
 					builder.append(" ").append(resolveFunction(ord.getProjectionType())).append("(");
 				if (ord.getItem() instanceof PathItem)
 					buildName((PathItem) ord.getItem(), builder);
+				else
+					buildSubquery(builder, (GenericObjectQuery<?>) ord.getItem());
 				if (ord.getProjectionType() != null)
 					throw new ObjectQueryException("Unsupported operation count in order by clause by jdoql", null);
 				if (ord.getType() != null)
@@ -278,8 +288,6 @@ public class JDOQLQueryGenerator {
 					builder.append(',');
 			}
 		}
-
-		this.query = builder.toString();
 	}
 
 	public String getOrderType(OrderType type) {
@@ -290,6 +298,12 @@ public class JDOQLQueryGenerator {
 			return "descending";
 		}
 		return "";
+	}
+
+	private void buildSubquery(StringBuilder builder, GenericObjectQuery<?> goq) {
+		builder.append("(");
+		buildQueryString(goq.getTargetClass(), (GenericInternalQueryBuilder) goq.getBuilder(), builder, goq.getRootPathItem().getName());
+		builder.append(")");
 	}
 
 	private void buildParameterName(PathItem conditionItem, StringBuilder builder) {
