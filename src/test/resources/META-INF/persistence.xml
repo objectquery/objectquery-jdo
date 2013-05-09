@@ -8,8 +8,7 @@
 		<mapping-file>org/objectquery/jdoobjectquery/domain/package.jdo</mapping-file>
 
 		<properties>
-			<property name="javax.jdo.PersistenceManagerFactoryClass"
-				value="org.datanucleus.api.jdo.JDOPersistenceManagerFactory" />
+			<property name="javax.jdo.PersistenceManagerFactoryClass" value="org.datanucleus.api.jdo.JDOPersistenceManagerFactory" />
 
 			<property name="datanucleus.ConnectionDriverName" value="org.hsqldb.jdbcDriver" />
 			<property name="datanucleus.ConnectionURL" value="jdbc:hsqldb:mem:testdb" />

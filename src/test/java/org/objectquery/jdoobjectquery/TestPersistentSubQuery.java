@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.jdo.PersistenceManager;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class TestPersistentSubQuery {
 		peristenceManager.currentTransaction().begin();
 	}
 
-	@Test
+	@Test(expected = ObjectQueryException.class)
 	@SuppressWarnings("unchecked")
 	public void testSubquerySimple() {
 		ObjectQuery<Person> query = new GenericObjectQuery<Person>(Person.class);
@@ -38,7 +39,7 @@ public class TestPersistentSubQuery {
 		Assert.assertEquals(res.get(0).getName(), "tom");
 	}
 
-	@Test
+	@Test(expected = ObjectQueryException.class)
 	@SuppressWarnings("unchecked")
 	public void testBackReferenceSubquery() {
 		GenericObjectQuery<Person> query = new GenericObjectQuery<Person>(Person.class);
@@ -53,7 +54,7 @@ public class TestPersistentSubQuery {
 		Assert.assertEquals(res.get(0).getName(), "tom");
 	}
 
-	@Test
+	@Test(expected = ObjectQueryException.class)
 	@SuppressWarnings("unchecked")
 	public void testDoubleSubQuery() {
 
@@ -74,7 +75,7 @@ public class TestPersistentSubQuery {
 
 	}
 
-	@Test
+	@Test(expected = ObjectQueryException.class)
 	@SuppressWarnings("unchecked")
 	public void testMultipleReferenceSubquery() {
 		GenericObjectQuery<Person> query = new GenericObjectQuery<Person>(Person.class);
@@ -93,7 +94,7 @@ public class TestPersistentSubQuery {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
+	@Test(expected = ObjectQueryException.class)
 	public void testProjectionSubquery() {
 		GenericObjectQuery<Person> query = new GenericObjectQuery<Person>(Person.class);
 		Person target = query.target();
@@ -129,6 +130,15 @@ public class TestPersistentSubQuery {
 		query.having(subQuery, ProjectionType.COUNT).eq(3D);
 
 		JDOObjectQuery.execute(query, peristenceManager);
+	}
+
+	@After
+	public void afterTest() {
+		if (peristenceManager != null) {
+			peristenceManager.currentTransaction().commit();
+			peristenceManager.close();
+		}
+		peristenceManager = null;
 	}
 
 }

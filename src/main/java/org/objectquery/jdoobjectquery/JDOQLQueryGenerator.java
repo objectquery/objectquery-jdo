@@ -221,9 +221,13 @@ public class JDOQLQueryGenerator {
 				if (projections.hasNext())
 					builder.append(",");
 			}
-		} else
+		} else if (!"this".equals(alias))
 			builder.append(alias);
-		builder.append(" from ").append(clazz.getName()).append(" ").append(alias);
+		
+		builder.append(" from ").append(clazz.getName()).append(" ");
+		if (!"this".equals(alias))
+			builder.append(alias);
+		
 		if (!query.getConditions().isEmpty()) {
 			builder.append(" where ");
 			stringfyGroup(query, builder);
@@ -264,9 +268,8 @@ public class JDOQLQueryGenerator {
 				if (projections.hasNext())
 					builder.append(",");
 			}
-		} else if (orderGrouped && query.getProjections().isEmpty()) {
-			builder.append(" group by A ");
 		}
+		
 		builder.append(havingBuilder);
 
 		if (!query.getOrders().isEmpty()) {
@@ -301,9 +304,12 @@ public class JDOQLQueryGenerator {
 	}
 
 	private void buildSubquery(StringBuilder builder, GenericObjectQuery<?> goq) {
+		throw new ObjectQueryException("Operation not supported by jdo datastore", null);
+		/*
 		builder.append("(");
 		buildQueryString(goq.getTargetClass(), (GenericInternalQueryBuilder) goq.getBuilder(), builder, goq.getRootPathItem().getName());
 		builder.append(")");
+		*/
 	}
 
 	private void buildParameterName(PathItem conditionItem, StringBuilder builder) {
