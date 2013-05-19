@@ -232,6 +232,15 @@ public class TestPersistentSelect {
 		Assert.assertEquals((Double) res.get(0)[1], 1000000d, 0);
 	}
 
+	@Test(expected = ObjectQueryException.class)
+	public void testSelectBetweenCondition() {
+		ObjectQuery<Home> qp = new GenericObjectQuery<Home>(Home.class);
+		Home target = qp.target();
+		qp.between(qp.box(target.getPrice()), 100000D, 2000000D);
+
+		JDOObjectQuery.execute(qp, peristenceManager);
+	}
+
 	@After
 	public void afterTest() {
 		if (peristenceManager != null) {
