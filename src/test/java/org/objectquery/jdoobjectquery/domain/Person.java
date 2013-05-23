@@ -6,7 +6,7 @@ public class Person {
 	private Long id;
 	private String name;
 	private List<Person> friends;
-	private Person mum;
+	private Person mom;
 	private Person dud;
 	private Home home;
 	private Dog dog;
@@ -35,12 +35,12 @@ public class Person {
 		this.friends = friends;
 	}
 
-	public Person getMum() {
-		return mum;
+	public Person getMom() {
+		return mom;
 	}
 
 	public void setMum(Person mum) {
-		this.mum = mum;
+		this.mom = mum;
 	}
 
 	public Person getDud() {

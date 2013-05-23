@@ -14,6 +14,7 @@ import org.objectquery.generic.ConditionType;
 import org.objectquery.generic.GenericInternalQueryBuilder;
 import org.objectquery.generic.GenericObjectQuery;
 import org.objectquery.generic.GroupType;
+import org.objectquery.generic.Join;
 import org.objectquery.generic.ObjectQueryException;
 import org.objectquery.generic.Order;
 import org.objectquery.generic.OrderType;
@@ -30,7 +31,8 @@ public class JDOQLQueryGenerator {
 		if (jpqlObjectQuery.getRootPathItem().getName() == null || jpqlObjectQuery.getRootPathItem().getName().isEmpty()) {
 			jpqlObjectQuery.getRootPathItem().setName("A");
 		}
-		buildQuery(jpqlObjectQuery.getTargetClass(), (GenericInternalQueryBuilder) jpqlObjectQuery.getBuilder(), jpqlObjectQuery.getRootPathItem().getName());
+		buildQuery(jpqlObjectQuery.getTargetClass(), (GenericInternalQueryBuilder) jpqlObjectQuery.getBuilder(), jpqlObjectQuery.getJoins(), jpqlObjectQuery
+				.getRootPathItem().getName());
 	}
 
 	private void stringfyGroup(ConditionGroup group, StringBuilder builder) {
@@ -176,10 +178,10 @@ public class JDOQLQueryGenerator {
 		return "";
 	}
 
-	public void buildQuery(Class<?> clazz, GenericInternalQueryBuilder query, String alias) {
+	public void buildQuery(Class<?> clazz, GenericInternalQueryBuilder query, List<Join> joins, String alias) {
 		parameters.clear();
 		StringBuilder builder = new StringBuilder();
-		buildQueryString(clazz, query, builder, alias);
+		buildQueryString(clazz, query, joins, builder, alias);
 		if (!parameters.isEmpty()) {
 			builder.append(" PARAMETERS ");
 			Iterator<Map.Entry<String, Object>> parami = parameters.entrySet().iterator();
@@ -199,7 +201,7 @@ public class JDOQLQueryGenerator {
 		this.query = builder.toString();
 	}
 
-	public void buildQueryString(Class<?> clazz, GenericInternalQueryBuilder query, StringBuilder builder, String alias) {
+	public void buildQueryString(Class<?> clazz, GenericInternalQueryBuilder query, List<Join> joins, StringBuilder builder, String alias) {
 		List<Projection> groupby = new ArrayList<Projection>();
 		boolean grouped = false;
 		builder.append("select ");
@@ -223,11 +225,14 @@ public class JDOQLQueryGenerator {
 			}
 		} else if (!"this".equals(alias))
 			builder.append(alias);
-		
+
 		builder.append(" from ").append(clazz.getName()).append(" ");
 		if (!"this".equals(alias))
 			builder.append(alias);
-		
+		if (!joins.isEmpty()) {
+			throw new ObjectQueryException("Join operation not supported by jdo datastore", null);
+		}
+
 		if (!query.getConditions().isEmpty()) {
 			builder.append(" where ");
 			stringfyGroup(query, builder);
@@ -235,19 +240,7 @@ public class JDOQLQueryGenerator {
 
 		StringBuilder havingBuilder = new StringBuilder();
 		if (!query.getHavings().isEmpty()) {
-			throw new ObjectQueryException("Operation not supported by jdo datastore", null);
-			/*
-			havingBuilder.append(" having");
-			Iterator<Having> havings = query.getHavings().iterator();
-			while (havings.hasNext()) {
-				Having having = havings.next();
-				havingBuilder.append(" ").append(resolveFunction(having.getProjectionType())).append('(');
-				buildName(having.getItem(), havingBuilder);
-				havingBuilder.append(')').append(getConditionType(having.getConditionType()));
-				havingBuilder.append(buildParameterName(having.getItem(), having.getValue()));
-				if (havings.hasNext())
-					havingBuilder.append(" ,");
-			}*/
+			throw new ObjectQueryException("Having operation not supported by jdo datastore", null);
 		}
 
 		boolean orderGrouped = false;
@@ -269,7 +262,7 @@ public class JDOQLQueryGenerator {
 					builder.append(",");
 			}
 		}
-		
+
 		builder.append(havingBuilder);
 
 		if (!query.getOrders().isEmpty()) {

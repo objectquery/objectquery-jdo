@@ -52,10 +52,10 @@ public class TestPersistentSelect {
 	public void testSelectPathValue() {
 		GenericObjectQuery<Person> qp = new GenericObjectQuery<Person>(Person.class);
 		Person target = qp.target();
-		qp.eq(target.getDud().getHome(), target.getMum().getHome());
+		qp.eq(target.getDud().getHome(), target.getMom().getHome());
 		List<Person> res = (List<Person>) JDOObjectQuery.execute(qp, peristenceManager);
 		Assert.assertEquals(1, res.size());
-		Assert.assertEquals(res.get(0).getDud().getHome(), res.get(0).getMum().getHome());
+		Assert.assertEquals(res.get(0).getDud().getHome(), res.get(0).getMom().getHome());
 	}
 
 	@Test

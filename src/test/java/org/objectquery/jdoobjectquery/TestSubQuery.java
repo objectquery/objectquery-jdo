@@ -49,10 +49,10 @@ public class TestSubQuery {
 		query.eq(target.getDud(), subQuery);
 		subQuery.eq(subQuery.target().getName(), target.getDog().getName());
 		ObjectQuery<Person> doubSubQuery = subQuery.subQuery(Person.class);
-		subQuery.eq(subQuery.target().getMum(), doubSubQuery);
+		subQuery.eq(subQuery.target().getMom(), doubSubQuery);
 
-		doubSubQuery.eq(doubSubQuery.target().getMum().getName(), subQuery.target().getMum().getName());
-		doubSubQuery.eq(doubSubQuery.target().getMum().getName(), query.target().getMum().getName());
+		doubSubQuery.eq(doubSubQuery.target().getMom().getName(), subQuery.target().getMom().getName());
+		doubSubQuery.eq(doubSubQuery.target().getMom().getName(), query.target().getMom().getName());
 
 		Assert.assertEquals(
 				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdoobjectquery.domain.Person AA0 where AA0.name  ==  A.dog.name && AA0.mum  ==  (select AA0A0 from org.objectquery.jdoobjectquery.domain.Person AA0A0 where AA0A0.mum.name  ==  AA0.mum.name && AA0A0.mum.name  ==  A.mum.name))",
@@ -67,7 +67,7 @@ public class TestSubQuery {
 		ObjectQuery<Person> subQuery = query.subQuery(Person.class);
 		ObjectQuery<Person> subQuery1 = query.subQuery(Person.class);
 		query.eq(target.getDud(), subQuery);
-		query.eq(target.getMum(), subQuery1);
+		query.eq(target.getMom(), subQuery1);
 
 		Assert.assertEquals(
 				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdoobjectquery.domain.Person AA0) && A.mum  ==  (select AA1 from org.objectquery.jdoobjectquery.domain.Person AA1)",

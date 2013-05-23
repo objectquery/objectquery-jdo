@@ -1,0 +1,46 @@
+package org.objectquery.jdoobjectquery;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.objectquery.ObjectQuery;
+import org.objectquery.generic.GenericObjectQuery;
+import org.objectquery.generic.JoinType;
+import org.objectquery.generic.ObjectQueryException;
+import org.objectquery.jdoobjectquery.domain.Person;
+
+public class TestJoinQuery {
+
+	@Test(expected=ObjectQueryException.class)
+	public void testSimpleJoin() {
+		ObjectQuery<Person> query = new GenericObjectQuery<Person>(Person.class);
+		Person joined = query.join(Person.class);
+		query.eq(query.target().getMom(), joined);
+
+		Assert.assertEquals(
+				"select A from org.objectquery.jdoobjectquery.domain.Person A  INNER JOIN  org.objectquery.jdoobjectquery.domain.Person AB0 where A.mom  ==  AB0",
+				JDOObjectQuery.jdoqlGenerator(query).getQuery());
+	}
+
+	@Test(expected=ObjectQueryException.class)
+	public void testTypedJoin() {
+		ObjectQuery<Person> query = new GenericObjectQuery<Person>(Person.class);
+		Person joined = query.join(Person.class, JoinType.LEFT);
+		query.eq(query.target().getMom(), joined);
+
+		Assert.assertEquals(
+				"select A from org.objectquery.jdoobjectquery.domain.Person A  LEFT JOIN  org.objectquery.jdoobjectquery.domain.Person AB0 where A.mom  ==  AB0",
+				JDOObjectQuery.jdoqlGenerator(query).getQuery());
+	}
+
+	@Test(expected=ObjectQueryException.class)
+	public void testTypedPathJoin() {
+		ObjectQuery<Person> query = new GenericObjectQuery<Person>(Person.class);
+		Person joined = query.join(query.target().getMom(), Person.class, JoinType.LEFT);
+		query.eq(joined.getName(), "test");
+
+		Assert.assertEquals(
+				"select A from org.objectquery.jdoobjectquery.domain.Person A  LEFT JOIN  org.objectquery.jdoobjectquery.domain.Person AB0 on A.mom == AB0 where AB0.name  ==  param_AB0_name PARAMETERS String param_AB0_name",
+				JDOObjectQuery.jdoqlGenerator(query).getQuery());
+	}
+
+}
