@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <jdo>
-	<package name="org.objectquery.jdoobjectquery.domain">
+	<package name="org.objectquery.jdo.domain">
 		<class name="Dog">
 			<inheritance strategy="new-table"></inheritance>
 		</class>

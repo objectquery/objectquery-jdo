@@ -1,4 +1,4 @@
-package org.objectquery.jdoobjectquery;
+package org.objectquery.jdo;
 
 import java.io.File;
 
@@ -6,10 +6,10 @@ import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 
-import org.objectquery.jdoobjectquery.domain.Dog;
-import org.objectquery.jdoobjectquery.domain.Home;
-import org.objectquery.jdoobjectquery.domain.Home.HomeType;
-import org.objectquery.jdoobjectquery.domain.Person;
+import org.objectquery.jdo.domain.Dog;
+import org.objectquery.jdo.domain.Home;
+import org.objectquery.jdo.domain.Person;
+import org.objectquery.jdo.domain.Home.HomeType;
 
 public class JDOTestHelper {
 	private static PersistenceManagerFactory factory;

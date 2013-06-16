@@ -1,4 +1,4 @@
-package org.objectquery.jdoobjectquery;
+package org.objectquery.jdo;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;

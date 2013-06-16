@@ -1,4 +1,4 @@
-package org.objectquery.jdoobjectquery;
+package org.objectquery.jdo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,9 @@ import org.objectquery.generic.GenericObjectQuery;
 import org.objectquery.generic.ObjectQueryException;
 import org.objectquery.generic.OrderType;
 import org.objectquery.generic.ProjectionType;
-import org.objectquery.jdoobjectquery.domain.Home;
-import org.objectquery.jdoobjectquery.domain.Person;
+import org.objectquery.jdo.JDOObjectQuery;
+import org.objectquery.jdo.domain.Home;
+import org.objectquery.jdo.domain.Person;
 
 public class TestSimpleQuery {
 

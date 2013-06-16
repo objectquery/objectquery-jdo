@@ -1,4 +1,4 @@
-package org.objectquery.jdoobjectquery;
+package org.objectquery.jdo;
 
 import java.util.ArrayList;
 import java.util.Collection;

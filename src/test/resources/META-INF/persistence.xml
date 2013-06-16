@@ -5,7 +5,7 @@
  http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
 	version="1.0">
 	<persistence-unit name="test">
-		<mapping-file>org/objectquery/jdoobjectquery/domain/package.jdo</mapping-file>
+		<mapping-file>org/objectquery/jdo/domain/package.jdo</mapping-file>
 
 		<properties>
 			<property name="javax.jdo.PersistenceManagerFactoryClass" value="org.datanucleus.api.jdo.JDOPersistenceManagerFactory" />

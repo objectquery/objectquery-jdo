@@ -1,11 +1,12 @@
-package org.objectquery.jdoobjectquery;
+package org.objectquery.jdo;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.objectquery.ObjectQuery;
 import org.objectquery.generic.GenericObjectQuery;
 import org.objectquery.generic.ObjectQueryException;
-import org.objectquery.jdoobjectquery.domain.Person;
+import org.objectquery.jdo.JDOObjectQuery;
+import org.objectquery.jdo.domain.Person;
 
 public class TestSubQuery {
 

@@ -1,4 +1,4 @@
-package org.objectquery.jdoobjectquery.domain;
+package org.objectquery.jdo.domain;
 
 
 
