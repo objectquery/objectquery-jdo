@@ -209,4 +209,16 @@ public class TestSimpleQuery {
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
+
+	@Test(expected = ObjectQueryException.class)
+	public void testBetweenCondition() {
+		ObjectQuery<Home> qp = new GenericObjectQuery<Home>(Home.class);
+		Home target = qp.target();
+		qp.between(qp.box(target.getPrice()), 20D, 30D);
+
+		Assert.assertEquals(
+				"",
+				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
+
+	}
 }

@@ -94,6 +94,8 @@ public class JDOQLQueryGenerator {
 			break;
 		case NOT_LIKE_NOCASE:
 			break;
+		case BETWEEN:
+			return " BETWEEN ";
 		}
 		return "";
 	}
@@ -149,6 +151,8 @@ public class JDOQLQueryGenerator {
 			buildName(cond.getItem(), sb);
 			sb.append(" ").append(getConditionType(type)).append(" ");
 			conditionValue(cond, sb);
+			if (cond.getType().equals(ConditionType.BETWEEN))
+				throw new ObjectQueryException("Operator BETWEEN not supported by JDO datastore", null);
 		}
 	}
 
