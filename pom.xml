@@ -9,7 +9,7 @@
 
 	<groupId>org.objectquery</groupId>
 	<artifactId>objectquery-jdo</artifactId>
-	<version>1.5.0-SNAPSHOT</version>
+	<version>1.5.0</version>
 	<packaging>jar</packaging>
 
 	<name>objectquery-jdo</name>
@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>org.objectquery</groupId>
 			<artifactId>objectquery</artifactId>
-			<version>1.5.0-SNAPSHOT</version>
+			<version>1.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
