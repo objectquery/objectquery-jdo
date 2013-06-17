@@ -23,7 +23,7 @@ public class TestSubQuery {
 		query.eq(query.target().getDud(), subQuery);
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdoobjectquery.domain.Person AA0 where AA0.name  ==  param_AA0_name) PARAMETERS String param_AA0_name",
+				"select A from org.objectquery.jdo.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdo.domain.Person AA0 where AA0.name  ==  param_AA0_name) PARAMETERS String param_AA0_name",
 				getQueryString(query));
 
 	}
@@ -37,7 +37,7 @@ public class TestSubQuery {
 		query.eq(query.target().getDud(), subQuery);
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdoobjectquery.domain.Person AA0 where AA0.name  ==  A.dog.name)",
+				"select A from org.objectquery.jdo.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdo.domain.Person AA0 where AA0.name  ==  A.dog.name)",
 				getQueryString(query));
 	}
 
@@ -56,7 +56,7 @@ public class TestSubQuery {
 		doubSubQuery.eq(doubSubQuery.target().getMom().getName(), query.target().getMom().getName());
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdoobjectquery.domain.Person AA0 where AA0.name  ==  A.dog.name && AA0.mum  ==  (select AA0A0 from org.objectquery.jdoobjectquery.domain.Person AA0A0 where AA0A0.mum.name  ==  AA0.mum.name && AA0A0.mum.name  ==  A.mum.name))",
+				"select A from org.objectquery.jdo.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdo.domain.Person AA0 where AA0.name  ==  A.dog.name && AA0.mum  ==  (select AA0A0 from org.objectquery.jdo.domain.Person AA0A0 where AA0A0.mum.name  ==  AA0.mum.name && AA0A0.mum.name  ==  A.mum.name))",
 				getQueryString(query));
 
 	}
@@ -71,7 +71,7 @@ public class TestSubQuery {
 		query.eq(target.getMom(), subQuery1);
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdoobjectquery.domain.Person AA0) && A.mum  ==  (select AA1 from org.objectquery.jdoobjectquery.domain.Person AA1)",
+				"select A from org.objectquery.jdo.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdo.domain.Person AA0) && A.mum  ==  (select AA1 from org.objectquery.jdo.domain.Person AA1)",
 				getQueryString(query));
 
 	}
@@ -85,7 +85,7 @@ public class TestSubQuery {
 		query.prj(subQuery);
 
 		Assert.assertEquals(
-				"select (select AA0 from org.objectquery.jdoobjectquery.domain.Person AA0 where AA0.dog.owner  ==  A.dud) from org.objectquery.jdoobjectquery.domain.Person A",
+				"select (select AA0 from org.objectquery.jdo.domain.Person AA0 where AA0.dog.owner  ==  A.dud) from org.objectquery.jdo.domain.Person A",
 				getQueryString(query));
 
 	}

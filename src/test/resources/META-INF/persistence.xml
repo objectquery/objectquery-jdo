@@ -20,7 +20,7 @@
 			<property name="datanucleus.autoCreateConstraints" value="false" />
 			<property name="datanucleus.autoStartMechanism" value="Classes" />
 			<property name="datanucleus.autoStartClassNames"
-				value="org.objectquery.jdoobjectquery.domain.Person,org.objectquery.jdoobjectquery.domain.Dog,org.objectquery.jdoobjectquery.domain.Home" />
+				value="org.objectquery.jdo.domain.Person,org.objectquery.jdo.domain.Dog,org.objectquery.jdo.domain.Home" />
 		</properties>
 	</persistence-unit>
 </persistence>

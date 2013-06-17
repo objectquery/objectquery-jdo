@@ -18,7 +18,7 @@ public class TestJoinQuery {
 		query.eq(query.target().getMom(), joined);
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A  INNER JOIN  org.objectquery.jdoobjectquery.domain.Person AB0 where A.mom  ==  AB0",
+				"select A from org.objectquery.jdo.domain.Person A  INNER JOIN  org.objectquery.jdo.domain.Person AB0 where A.mom  ==  AB0",
 				JDOObjectQuery.jdoqlGenerator(query).getQuery());
 	}
 
@@ -29,7 +29,7 @@ public class TestJoinQuery {
 		query.eq(query.target().getMom(), joined);
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A  LEFT JOIN  org.objectquery.jdoobjectquery.domain.Person AB0 where A.mom  ==  AB0",
+				"select A from org.objectquery.jdo.domain.Person A  LEFT JOIN  org.objectquery.jdo.domain.Person AB0 where A.mom  ==  AB0",
 				JDOObjectQuery.jdoqlGenerator(query).getQuery());
 	}
 
@@ -40,7 +40,7 @@ public class TestJoinQuery {
 		query.eq(joined.getName(), "test");
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A  LEFT JOIN  org.objectquery.jdoobjectquery.domain.Person AB0 on A.mom == AB0 where AB0.name  ==  param_AB0_name PARAMETERS String param_AB0_name",
+				"select A from org.objectquery.jdo.domain.Person A  LEFT JOIN  org.objectquery.jdo.domain.Person AB0 on A.mom == AB0 where AB0.name  ==  param_AB0_name PARAMETERS String param_AB0_name",
 				JDOObjectQuery.jdoqlGenerator(query).getQuery());
 	}
 

@@ -23,7 +23,7 @@ public class TestSimpleQuery {
 		Person target = qp.target();
 		qp.eq(target.getName(), "tom");
 
-		Assert.assertEquals("select A from org.objectquery.jdoobjectquery.domain.Person A where A.name  ==  param_A_name PARAMETERS String param_A_name",
+		Assert.assertEquals("select A from org.objectquery.jdo.domain.Person A where A.name  ==  param_A_name PARAMETERS String param_A_name",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -37,7 +37,7 @@ public class TestSimpleQuery {
 		qp.eq(target.getName(), "tom3");
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.name  ==  param_A_name && A.name  ==  param_A_name1 PARAMETERS String param_A_name,String param_A_name1",
+				"select A from org.objectquery.jdo.domain.Person A where A.name  ==  param_A_name && A.name  ==  param_A_name1 PARAMETERS String param_A_name,String param_A_name1",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -51,7 +51,7 @@ public class TestSimpleQuery {
 		qp.eq(target.getDud().getName(), "tom3");
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.dog.name  ==  param_A_dog_name && A.dud.name  ==  param_A_dud_name PARAMETERS String param_A_dog_name,String param_A_dud_name",
+				"select A from org.objectquery.jdo.domain.Person A where A.dog.name  ==  param_A_dog_name && A.dud.name  ==  param_A_dud_name PARAMETERS String param_A_dog_name,String param_A_dud_name",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -65,7 +65,7 @@ public class TestSimpleQuery {
 		qp.eq(target.getDog().getName(), "tom");
 
 		Assert.assertEquals(
-				"select A.name from org.objectquery.jdoobjectquery.domain.Person A where A.dog.name  ==  param_A_dog_name PARAMETERS String param_A_dog_name",
+				"select A.name from org.objectquery.jdo.domain.Person A where A.dog.name  ==  param_A_dog_name PARAMETERS String param_A_dog_name",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -79,7 +79,7 @@ public class TestSimpleQuery {
 		qp.eq(target.getDog().getName(), "tom");
 
 		Assert.assertEquals(
-				"select  COUNT(A) from org.objectquery.jdoobjectquery.domain.Person A where A.dog.name  ==  param_A_dog_name PARAMETERS String param_A_dog_name",
+				"select  COUNT(A) from org.objectquery.jdo.domain.Person A where A.dog.name  ==  param_A_dog_name PARAMETERS String param_A_dog_name",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -93,7 +93,7 @@ public class TestSimpleQuery {
 		qp.order(target.getName());
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.dog.name  ==  param_A_dog_name order by A.name PARAMETERS String param_A_dog_name",
+				"select A from org.objectquery.jdo.domain.Person A where A.dog.name  ==  param_A_dog_name order by A.name PARAMETERS String param_A_dog_name",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -107,7 +107,7 @@ public class TestSimpleQuery {
 		qp.order(target.getName(), OrderType.ASC);
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.dog.name  ==  param_A_dog_name order by A.name ascending PARAMETERS String param_A_dog_name",
+				"select A from org.objectquery.jdo.domain.Person A where A.dog.name  ==  param_A_dog_name order by A.name ascending PARAMETERS String param_A_dog_name",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -122,7 +122,7 @@ public class TestSimpleQuery {
 		qp.order(target.getDog().getName(), OrderType.DESC);
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.dog.name  ==  param_A_dog_name order by A.name descending,A.dog.name descending PARAMETERS String param_A_dog_name",
+				"select A from org.objectquery.jdo.domain.Person A where A.dog.name  ==  param_A_dog_name order by A.name descending,A.dog.name descending PARAMETERS String param_A_dog_name",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -144,7 +144,7 @@ public class TestSimpleQuery {
 		qp.notLikeNc(target.getName(), "tom");
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.name  ==  param_A_name && A.name.matches(param_A_name1) && A.name  >  param_A_name2 && "
+				"select A from org.objectquery.jdo.domain.Person A where A.name  ==  param_A_name && A.name.matches(param_A_name1) && A.name  >  param_A_name2 && "
 						+ "A.name  <  param_A_name3 && A.name  >=  param_A_name4 && A.name  <=  param_A_name5 && A.name  !=  param_A_name6 && !A.name.matches(param_A_name7) && A.name.toUpperCase().matches(param_A_name8.toUpperCase()) && !A.name.toUpperCase().matches(param_A_name9.toUpperCase()) "
 						+ "PARAMETERS String param_A_name,String param_A_name1,String param_A_name2,String param_A_name3,String param_A_name4,String param_A_name5,String param_A_name6,String param_A_name7,String param_A_name8,String param_A_name9",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
@@ -161,7 +161,7 @@ public class TestSimpleQuery {
 		qp.notIn(target.getName(), pars);
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where param_A_name.contains(A.name) && !param_A_name1.contains(A.name) PARAMETERS java.util.Collection param_A_name,java.util.Collection param_A_name1",
+				"select A from org.objectquery.jdo.domain.Person A where param_A_name.contains(A.name) && !param_A_name1.contains(A.name) PARAMETERS java.util.Collection param_A_name,java.util.Collection param_A_name1",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -176,7 +176,7 @@ public class TestSimpleQuery {
 		qp.notContains(target.getFriends(), p);
 
 		Assert.assertEquals(
-				"select A from org.objectquery.jdoobjectquery.domain.Person A where A.friends.contains(param_A_friends) && !A.friends.contains(param_A_friends1) PARAMETERS Person param_A_friends,Person param_A_friends1",
+				"select A from org.objectquery.jdo.domain.Person A where A.friends.contains(param_A_friends) && !A.friends.contains(param_A_friends1) PARAMETERS Person param_A_friends,Person param_A_friends1",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -190,7 +190,7 @@ public class TestSimpleQuery {
 		qp.prj(qp.box(target.getPrice()), ProjectionType.MAX);
 		qp.order(target.getAddress());
 
-		Assert.assertEquals("select A.address, MAX(A.price) from org.objectquery.jdoobjectquery.domain.Home A group by A.address order by A.address",
+		Assert.assertEquals("select A.address, MAX(A.price) from org.objectquery.jdo.domain.Home A group by A.address order by A.address",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -206,7 +206,7 @@ public class TestSimpleQuery {
 		qp.having(qp.box(target.getPrice()), ProjectionType.MAX).eq(0D);
 
 		Assert.assertEquals(
-				"select A.address, MAX(A.price) from org.objectquery.jdoobjectquery.domain.Home A PARAMETERS Double param_A_price group by A.address having MAX(A.price) == param_A_price order by A.address",
+				"select A.address, MAX(A.price) from org.objectquery.jdo.domain.Home A PARAMETERS Double param_A_price group by A.address having MAX(A.price) == param_A_price order by A.address",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
