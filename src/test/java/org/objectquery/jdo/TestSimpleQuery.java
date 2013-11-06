@@ -10,7 +10,6 @@ import org.objectquery.generic.GenericObjectQuery;
 import org.objectquery.generic.ObjectQueryException;
 import org.objectquery.generic.OrderType;
 import org.objectquery.generic.ProjectionType;
-import org.objectquery.jdo.JDOObjectQuery;
 import org.objectquery.jdo.domain.Home;
 import org.objectquery.jdo.domain.Person;
 

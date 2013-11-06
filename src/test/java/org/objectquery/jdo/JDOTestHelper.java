@@ -8,8 +8,8 @@ import javax.jdo.PersistenceManagerFactory;
 
 import org.objectquery.jdo.domain.Dog;
 import org.objectquery.jdo.domain.Home;
-import org.objectquery.jdo.domain.Person;
 import org.objectquery.jdo.domain.Home.HomeType;
+import org.objectquery.jdo.domain.Person;
 
 public class JDOTestHelper {
 	private static PersistenceManagerFactory factory;

@@ -19,12 +19,12 @@ import org.objectquery.jdo.domain.Person;
 
 public class TestPersistentSelect {
 
-	private PersistenceManager peristenceManager;
+	private PersistenceManager persitenceManager;
 
 	@Before
 	public void beforeTest() {
-		peristenceManager = JDOTestHelper.getFactory().getPersistenceManager();
-		peristenceManager.currentTransaction().begin();
+		persitenceManager = JDOTestHelper.getFactory().getPersistenceManager();
+		persitenceManager.currentTransaction().begin();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -34,7 +34,7 @@ public class TestPersistentSelect {
 		Person target = qp.target();
 		qp.eq(target.getName(), "tom");
 
-		List<Person> res = (List<Person>) (List<Person>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Person> res = (List<Person>) (List<Person>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(1, res.size());
 		Assert.assertEquals(res.get(0).getName(), "tom");
 	}
@@ -43,7 +43,7 @@ public class TestPersistentSelect {
 	@Test
 	public void testSimpleSelectWithutCond() {
 		GenericObjectQuery<Person> qp = new GenericObjectQuery<Person>(Person.class);
-		List<Person> res = (List<Person>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Person> res = (List<Person>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(3, res.size());
 	}
 
@@ -53,7 +53,7 @@ public class TestPersistentSelect {
 		GenericObjectQuery<Person> qp = new GenericObjectQuery<Person>(Person.class);
 		Person target = qp.target();
 		qp.eq(target.getDud().getHome(), target.getMom().getHome());
-		List<Person> res = (List<Person>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Person> res = (List<Person>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(1, res.size());
 		Assert.assertEquals(res.get(0).getDud().getHome(), res.get(0).getMom().getHome());
 	}
@@ -64,7 +64,7 @@ public class TestPersistentSelect {
 		GenericObjectQuery<Person> qp = new GenericObjectQuery<Person>(Person.class);
 		Person target = qp.target();
 		qp.eq(target.getDud().getName(), "tomdud");
-		List<Person> res = (List<Person>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Person> res = (List<Person>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(1, res.size());
 		Assert.assertEquals(res.get(0).getDud().getName(), "tomdud");
 	}
@@ -74,7 +74,7 @@ public class TestPersistentSelect {
 		GenericObjectQuery<Person> qp = new GenericObjectQuery<Person>(Person.class);
 		Person target = qp.target();
 		qp.prj(target, ProjectionType.COUNT);
-		Long res = (Long) JDOObjectQuery.execute(qp, peristenceManager);
+		Long res = (Long) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertNotNull(res);
 		Assert.assertEquals(new Long(3), res);
 	}
@@ -87,7 +87,7 @@ public class TestPersistentSelect {
 		qp.prj(target.getName());
 		qp.prj(target.getHome());
 		qp.eq(target.getName(), "tom");
-		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(1, res.size());
 		Assert.assertEquals("tom", res.get(0)[0]);
 		Assert.assertEquals("homeless", ((Home) res.get(0)[1]).getAddress());
@@ -100,7 +100,7 @@ public class TestPersistentSelect {
 		Person target = qp.target();
 		qp.prj(target.getName());
 		qp.order(target.getName());
-		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(3, res.size());
 		Assert.assertEquals("tom", res.get(0));
 		Assert.assertEquals("tomdud", res.get(1));
@@ -114,7 +114,7 @@ public class TestPersistentSelect {
 		Person target = qp.target();
 		qp.prj(target.getName());
 		qp.order(target.getName(), OrderType.DESC);
-		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(3, res.size());
 		Assert.assertEquals("tommum", res.get(0));
 		Assert.assertEquals("tomdud", res.get(1));
@@ -137,7 +137,7 @@ public class TestPersistentSelect {
 		qp.notEq(target.getName(), "tom");
 		qp.likeNc(target.getName(), "tom");
 		qp.notLikeNc(target.getName(), "tom");
-		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(0, res.size());
 
 	}
@@ -154,7 +154,7 @@ public class TestPersistentSelect {
 		qp.in(target.getName(), pars);
 		qp.notIn(target.getName(), pars);
 
-		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(0, res.size());
 	}
 
@@ -166,7 +166,7 @@ public class TestPersistentSelect {
 		Person target0 = qp0.target();
 		qp0.eq(target0.getName(), "tom");
 
-		List<Person> res0 = (List<Person>) JDOObjectQuery.execute(qp0, peristenceManager);
+		List<Person> res0 = (List<Person>) JDOObjectQuery.execute(qp0, persitenceManager);
 		Assert.assertEquals(1, res0.size());
 		Person p = res0.get(0);
 
@@ -175,7 +175,7 @@ public class TestPersistentSelect {
 		qp.contains(target.getFriends(), p);
 		qp.notContains(target.getFriends(), p);
 
-		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(0, res.size());
 	}
 
@@ -189,7 +189,7 @@ public class TestPersistentSelect {
 		qp.prj(qp.box(target.getPrice()), ProjectionType.MAX);
 		qp.order(target.getAddress());
 
-		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(res.size(), 3);
 		Assert.assertEquals(res.get(0)[1], 0d);
 		Assert.assertEquals(res.get(1)[1], 0d);
@@ -204,7 +204,7 @@ public class TestPersistentSelect {
 		Home target = qp.target();
 		qp.order(qp.box(target.getPrice()), ProjectionType.MAX, OrderType.ASC);
 
-		List<Home> res = (List<Home>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Home> res = (List<Home>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(3, res.size());
 		Assert.assertEquals(0d, res.get(0).getPrice(), 0);
 		Assert.assertEquals(0d, res.get(1).getPrice(), 0);
@@ -222,7 +222,7 @@ public class TestPersistentSelect {
 		qp.prj(qp.box(target.getPrice()), ProjectionType.MAX);
 		qp.order(qp.box(target.getPrice()), ProjectionType.MAX, OrderType.DESC);
 
-		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(3, res.size());
 		Assert.assertEquals((Double) res.get(0)[1], 1000000d, 0);
 		Assert.assertEquals((Double) res.get(1)[1], 0d, 0);
@@ -238,7 +238,7 @@ public class TestPersistentSelect {
 		qp.prj(qp.box(target.getPrice()), ProjectionType.MAX);
 		qp.having(qp.box(target.getPrice()), ProjectionType.MAX).eq(1000000d);
 
-		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, peristenceManager);
+		List<Object[]> res = (List<Object[]>) JDOObjectQuery.execute(qp, persitenceManager);
 		Assert.assertEquals(1, res.size());
 		Assert.assertEquals((Double) res.get(0)[1], 1000000d, 0);
 	}
@@ -249,16 +249,16 @@ public class TestPersistentSelect {
 		Home target = qp.target();
 		qp.between(qp.box(target.getPrice()), 100000D, 2000000D);
 
-		JDOObjectQuery.execute(qp, peristenceManager);
+		JDOObjectQuery.execute(qp, persitenceManager);
 	}
 
 	@After
 	public void afterTest() {
-		if (peristenceManager != null) {
-			peristenceManager.currentTransaction().commit();
-			peristenceManager.close();
+		if (persitenceManager != null) {
+			persitenceManager.currentTransaction().commit();
+			persitenceManager.close();
 		}
-		peristenceManager = null;
+		persitenceManager = null;
 	}
 
 }

@@ -6,7 +6,6 @@ import org.objectquery.ObjectQuery;
 import org.objectquery.generic.GenericObjectQuery;
 import org.objectquery.generic.JoinType;
 import org.objectquery.generic.ObjectQueryException;
-import org.objectquery.jdo.JDOObjectQuery;
 import org.objectquery.jdo.domain.Person;
 
 public class TestJoinQuery {
