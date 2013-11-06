@@ -12,7 +12,7 @@ import org.objectquery.generic.ConditionGroup;
 import org.objectquery.generic.ConditionItem;
 import org.objectquery.generic.ConditionType;
 import org.objectquery.generic.GenericInternalQueryBuilder;
-import org.objectquery.generic.GenericObjectQuery;
+import org.objectquery.generic.GenericSelectQuery;
 import org.objectquery.generic.GroupType;
 import org.objectquery.generic.Join;
 import org.objectquery.generic.ObjectQueryException;
@@ -27,7 +27,7 @@ public class JDOQLQueryGenerator {
 	private Map<String, Object> parameters = new LinkedHashMap<String, Object>();
 	private String query;
 
-	JDOQLQueryGenerator(GenericObjectQuery<?> jpqlObjectQuery) {
+	JDOQLQueryGenerator(GenericSelectQuery<?> jpqlObjectQuery) {
 		if (jpqlObjectQuery.getRootPathItem().getName() == null || jpqlObjectQuery.getRootPathItem().getName().isEmpty()) {
 			jpqlObjectQuery.getRootPathItem().setName("A");
 		}
@@ -159,8 +159,8 @@ public class JDOQLQueryGenerator {
 	private void conditionValue(ConditionItem cond, StringBuilder sb) {
 		if (cond.getValue() instanceof PathItem) {
 			buildName((PathItem) cond.getValue(), sb);
-		} else if (cond.getValue() instanceof GenericObjectQuery<?>) {
-			buildSubquery(sb, (GenericObjectQuery<?>) cond.getValue());
+		} else if (cond.getValue() instanceof GenericSelectQuery<?>) {
+			buildSubquery(sb, (GenericSelectQuery<?>) cond.getValue());
 		} else {
 			sb.append(buildParameterName(cond.getItem(), cond.getValue()));
 		}
@@ -221,7 +221,7 @@ public class JDOQLQueryGenerator {
 				if (proj.getItem() instanceof PathItem)
 					buildName((PathItem) proj.getItem(), builder);
 				else
-					buildSubquery(builder, (GenericObjectQuery<?>) proj.getItem());
+					buildSubquery(builder, (GenericSelectQuery<?>) proj.getItem());
 				if (proj.getType() != null)
 					builder.append(")");
 				if (projections.hasNext())
@@ -279,7 +279,7 @@ public class JDOQLQueryGenerator {
 				if (ord.getItem() instanceof PathItem)
 					buildName((PathItem) ord.getItem(), builder);
 				else
-					buildSubquery(builder, (GenericObjectQuery<?>) ord.getItem());
+					buildSubquery(builder, (GenericSelectQuery<?>) ord.getItem());
 				if (ord.getProjectionType() != null)
 					throw new ObjectQueryException("Unsupported operation count in order by clause by jdoql", null);
 				if (ord.getType() != null)
@@ -300,7 +300,7 @@ public class JDOQLQueryGenerator {
 		return "";
 	}
 
-	private void buildSubquery(StringBuilder builder, GenericObjectQuery<?> goq) {
+	private void buildSubquery(StringBuilder builder, GenericSelectQuery<?> goq) {
 		throw new ObjectQueryException("Operation not supported by jdo datastore", null);
 		/*
 		builder.append("(");
