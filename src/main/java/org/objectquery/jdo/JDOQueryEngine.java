@@ -12,28 +12,25 @@ import org.objectquery.UpdateQuery;
 
 public class JDOQueryEngine extends QueryEngine<PersistenceManager> {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <RET extends List<?>> RET execute(SelectQuery<?> query, PersistenceManager engineSession) {
-		// TODO Auto-generated method stub
-		return null;
+		return (RET) JDOObjectQuery.execute(query, engineSession);
 	}
 
 	@Override
 	public int execute(DeleteQuery<?> dq, PersistenceManager engineSession) {
-		// TODO Auto-generated method stub
-		return 0;
+		throw new UnsupportedOperationException("JDO Persistence Engine doesn't support delete query");
 	}
 
 	@Override
 	public boolean execute(InsertQuery<?> ip, PersistenceManager engineSession) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new UnsupportedOperationException("JDO Persistence Engine doesn't support insert query");
 	}
 
 	@Override
 	public int execute(UpdateQuery<?> query, PersistenceManager engineSession) {
-		// TODO Auto-generated method stub
-		return 0;
+		throw new UnsupportedOperationException("JDO Persistence Engine doesn't support update query");
 	}
 
 }
