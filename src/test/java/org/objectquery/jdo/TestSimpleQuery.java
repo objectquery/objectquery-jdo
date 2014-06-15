@@ -18,19 +18,19 @@ public class TestSimpleQuery {
 	@Test
 	public void testBaseCondition() {
 
-		GenericSelectQuery<Person> qp = new GenericSelectQuery<Person>(Person.class);
+		GenericSelectQuery<Person, Object> qp = new GenericSelectQuery<Person, Object>(Person.class);
 		Person target = qp.target();
 		qp.eq(target.getName(), "tom");
 
-		Assert.assertEquals("select A from org.objectquery.jdo.domain.Person A where A.name  ==  param_A_name PARAMETERS String param_A_name",
-				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
+		Assert.assertEquals("select A from org.objectquery.jdo.domain.Person A where A.name  ==  param_A_name PARAMETERS String param_A_name", JDOObjectQuery
+				.jdoqlGenerator(qp).getQuery());
 
 	}
 
 	@Test
 	public void testDupliedPath() {
 
-		GenericSelectQuery<Person> qp = new GenericSelectQuery<Person>(Person.class);
+		GenericSelectQuery<Person, Object> qp = new GenericSelectQuery<Person, Object>(Person.class);
 		Person target = qp.target();
 		qp.eq(target.getName(), "tom");
 		qp.eq(target.getName(), "tom3");
@@ -44,7 +44,7 @@ public class TestSimpleQuery {
 	@Test
 	public void testDottedPath() {
 
-		GenericSelectQuery<Person> qp = new GenericSelectQuery<Person>(Person.class);
+		GenericSelectQuery<Person, Object> qp = new GenericSelectQuery<Person, Object>(Person.class);
 		Person target = qp.target();
 		qp.eq(target.getDog().getName(), "tom");
 		qp.eq(target.getDud().getName(), "tom3");
@@ -58,13 +58,12 @@ public class TestSimpleQuery {
 	@Test
 	public void testProjection() {
 
-		GenericSelectQuery<Person> qp = new GenericSelectQuery<Person>(Person.class);
+		GenericSelectQuery<Person, Object> qp = new GenericSelectQuery<Person, Object>(Person.class);
 		Person target = qp.target();
 		qp.prj(target.getName());
 		qp.eq(target.getDog().getName(), "tom");
 
-		Assert.assertEquals(
-				"select A.name from org.objectquery.jdo.domain.Person A where A.dog.name  ==  param_A_dog_name PARAMETERS String param_A_dog_name",
+		Assert.assertEquals("select A.name from org.objectquery.jdo.domain.Person A where A.dog.name  ==  param_A_dog_name PARAMETERS String param_A_dog_name",
 				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
@@ -72,7 +71,7 @@ public class TestSimpleQuery {
 	@Test
 	public void testProjectionCountThis() {
 
-		GenericSelectQuery<Person> qp = new GenericSelectQuery<Person>(Person.class);
+		GenericSelectQuery<Person, Object> qp = new GenericSelectQuery<Person, Object>(Person.class);
 		Person target = qp.target();
 		qp.prj(target, ProjectionType.COUNT);
 		qp.eq(target.getDog().getName(), "tom");
@@ -86,7 +85,7 @@ public class TestSimpleQuery {
 	@Test
 	public void testSelectOrder() {
 
-		GenericSelectQuery<Person> qp = new GenericSelectQuery<Person>(Person.class);
+		GenericSelectQuery<Person, Object> qp = new GenericSelectQuery<Person, Object>(Person.class);
 		Person target = qp.target();
 		qp.eq(target.getDog().getName(), "tom");
 		qp.order(target.getName());
@@ -100,7 +99,7 @@ public class TestSimpleQuery {
 	@Test
 	public void testOrderAsc() {
 
-		GenericSelectQuery<Person> qp = new GenericSelectQuery<Person>(Person.class);
+		GenericSelectQuery<Person, Object> qp = new GenericSelectQuery<Person, Object>(Person.class);
 		Person target = qp.target();
 		qp.eq(target.getDog().getName(), "tom");
 		qp.order(target.getName(), OrderType.ASC);
@@ -114,7 +113,7 @@ public class TestSimpleQuery {
 	@Test
 	public void testOrderDesc() {
 
-		GenericSelectQuery<Person> qp = new GenericSelectQuery<Person>(Person.class);
+		GenericSelectQuery<Person, Object> qp = new GenericSelectQuery<Person, Object>(Person.class);
 		Person target = qp.target();
 		qp.eq(target.getDog().getName(), "tom");
 		qp.order(target.getName(), OrderType.DESC);
@@ -129,7 +128,7 @@ public class TestSimpleQuery {
 	@Test
 	public void testAllSimpleConditions() {
 
-		GenericSelectQuery<Person> qp = new GenericSelectQuery<Person>(Person.class);
+		GenericSelectQuery<Person, Object> qp = new GenericSelectQuery<Person, Object>(Person.class);
 		Person target = qp.target();
 		qp.eq(target.getName(), "tom");
 		qp.like(target.getName(), "tom");
@@ -153,7 +152,7 @@ public class TestSimpleQuery {
 	@Test
 	public void testINCondition() {
 
-		GenericSelectQuery<Person> qp = new GenericSelectQuery<Person>(Person.class);
+		GenericSelectQuery<Person, Object> qp = new GenericSelectQuery<Person, Object>(Person.class);
 		Person target = qp.target();
 		List<String> pars = new ArrayList<String>();
 		qp.in(target.getName(), pars);
@@ -168,7 +167,7 @@ public class TestSimpleQuery {
 	@Test
 	public void testContainsCondition() {
 
-		GenericSelectQuery<Person> qp = new GenericSelectQuery<Person>(Person.class);
+		GenericSelectQuery<Person, Object> qp = new GenericSelectQuery<Person, Object>(Person.class);
 		Person target = qp.target();
 		Person p = new Person();
 		qp.contains(target.getFriends(), p);
@@ -183,21 +182,21 @@ public class TestSimpleQuery {
 	@Test
 	public void testProjectionGroup() {
 
-		SelectQuery<Home> qp = new GenericSelectQuery<Home>(Home.class);
+		SelectQuery<Home> qp = new GenericSelectQuery<Home, Object>(Home.class);
 		Home target = qp.target();
 		qp.prj(target.getAddress());
 		qp.prj(qp.box(target.getPrice()), ProjectionType.MAX);
 		qp.order(target.getAddress());
 
-		Assert.assertEquals("select A.address, MAX(A.price) from org.objectquery.jdo.domain.Home A group by A.address order by A.address",
-				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
+		Assert.assertEquals("select A.address, MAX(A.price) from org.objectquery.jdo.domain.Home A group by A.address order by A.address", JDOObjectQuery
+				.jdoqlGenerator(qp).getQuery());
 
 	}
 
 	@Test(expected = ObjectQueryException.class)
 	public void testProjectionGroupHaving() {
 
-		SelectQuery<Home> qp = new GenericSelectQuery<Home>(Home.class);
+		SelectQuery<Home> qp = new GenericSelectQuery<Home, Object>(Home.class);
 		Home target = qp.target();
 		qp.prj(target.getAddress());
 		qp.prj(qp.box(target.getPrice()), ProjectionType.MAX);
@@ -212,13 +211,11 @@ public class TestSimpleQuery {
 
 	@Test(expected = ObjectQueryException.class)
 	public void testBetweenCondition() {
-		SelectQuery<Home> qp = new GenericSelectQuery<Home>(Home.class);
+		SelectQuery<Home> qp = new GenericSelectQuery<Home, Object>(Home.class);
 		Home target = qp.target();
 		qp.between(qp.box(target.getPrice()), 20D, 30D);
 
-		Assert.assertEquals(
-				"",
-				JDOObjectQuery.jdoqlGenerator(qp).getQuery());
+		Assert.assertEquals("", JDOObjectQuery.jdoqlGenerator(qp).getQuery());
 
 	}
 }
