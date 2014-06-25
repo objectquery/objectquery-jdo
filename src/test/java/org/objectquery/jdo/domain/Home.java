@@ -1,6 +1,5 @@
 package org.objectquery.jdo.domain;
 
-
 public class Home {
 	public enum HomeType {
 		KENNEL, HOUSE

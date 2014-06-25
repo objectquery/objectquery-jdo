@@ -1,6 +1,7 @@
 package org.objectquery.jdo;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.objectquery.BaseSelectQuery;
 import org.objectquery.SelectQuery;
@@ -22,7 +23,7 @@ public class TestSubQuery {
 		subQuery.eq(subQuery.target().getName(), "test");
 		query.eq(query.target().getDud(), subQuery);
 
-		Assert.assertEquals(
+		assertEquals(
 				"select A from org.objectquery.jdo.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdo.domain.Person AA0 where AA0.name  ==  param_AA0_name) PARAMETERS String param_AA0_name",
 				getQueryString(query));
 
@@ -36,7 +37,7 @@ public class TestSubQuery {
 		subQuery.eq(subQuery.target().getName(), target.getDog().getName());
 		query.eq(query.target().getDud(), subQuery);
 
-		Assert.assertEquals(
+		assertEquals(
 				"select A from org.objectquery.jdo.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdo.domain.Person AA0 where AA0.name  ==  A.dog.name)",
 				getQueryString(query));
 	}
@@ -55,7 +56,7 @@ public class TestSubQuery {
 		doubSubQuery.eq(doubSubQuery.target().getMom().getName(), subQuery.target().getMom().getName());
 		doubSubQuery.eq(doubSubQuery.target().getMom().getName(), query.target().getMom().getName());
 
-		Assert.assertEquals(
+		assertEquals(
 				"select A from org.objectquery.jdo.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdo.domain.Person AA0 where AA0.name  ==  A.dog.name && AA0.mum  ==  (select AA0A0 from org.objectquery.jdo.domain.Person AA0A0 where AA0A0.mum.name  ==  AA0.mum.name && AA0A0.mum.name  ==  A.mum.name))",
 				getQueryString(query));
 
@@ -70,7 +71,7 @@ public class TestSubQuery {
 		query.eq(target.getDud(), subQuery);
 		query.eq(target.getMom(), subQuery1);
 
-		Assert.assertEquals(
+		assertEquals(
 				"select A from org.objectquery.jdo.domain.Person A where A.dud  ==  (select AA0 from org.objectquery.jdo.domain.Person AA0) && A.mum  ==  (select AA1 from org.objectquery.jdo.domain.Person AA1)",
 				getQueryString(query));
 
@@ -84,8 +85,7 @@ public class TestSubQuery {
 		subQuery.eq(subQuery.target().getDog().getOwner(), target.getDud());
 		query.prj(subQuery);
 
-		Assert.assertEquals(
-				"select (select AA0 from org.objectquery.jdo.domain.Person AA0 where AA0.dog.owner  ==  A.dud) from org.objectquery.jdo.domain.Person A",
+		assertEquals("select (select AA0 from org.objectquery.jdo.domain.Person AA0 where AA0.dog.owner  ==  A.dud) from org.objectquery.jdo.domain.Person A",
 				getQueryString(query));
 
 	}

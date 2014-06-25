@@ -7,6 +7,7 @@ import javax.jdo.PersistenceManager;
 import org.objectquery.DeleteQuery;
 import org.objectquery.InsertQuery;
 import org.objectquery.QueryEngine;
+import org.objectquery.SelectMapQuery;
 import org.objectquery.SelectQuery;
 import org.objectquery.UpdateQuery;
 
@@ -31,6 +32,12 @@ public class JDOQueryEngine extends QueryEngine<PersistenceManager> {
 	@Override
 	public int execute(UpdateQuery<?> query, PersistenceManager engineSession) {
 		throw new UnsupportedOperationException("JDO Persistence Engine doesn't support update query");
+	}
+
+	@Override
+	public <RET extends List<M>, M> RET execute(SelectMapQuery<?, M> query, PersistenceManager engineSession) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

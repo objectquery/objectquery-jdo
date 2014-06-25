@@ -1,7 +1,5 @@
 package org.objectquery.jdo.domain;
 
-
-
 public class Dog {
 
 	private Long id;

@@ -1,11 +1,12 @@
 package org.objectquery.jdo;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.objectquery.BaseSelectQuery;
@@ -36,8 +37,8 @@ public class TestPersistentSubQuery {
 		query.eq(query.target().getDud(), subQuery);
 
 		List<Person> res = (List<Person>) JDOObjectQuery.execute(query, peristenceManager);
-		Assert.assertEquals(1, res.size());
-		Assert.assertEquals(res.get(0).getName(), "tom");
+		assertEquals(1, res.size());
+		assertEquals(res.get(0).getName(), "tom");
 	}
 
 	@Test(expected = ObjectQueryException.class)
@@ -51,8 +52,8 @@ public class TestPersistentSubQuery {
 		query.eq(query.target().getDud(), subQuery);
 
 		List<Person> res = (List<Person>) JDOObjectQuery.execute(query, peristenceManager);
-		Assert.assertEquals(1, res.size());
-		Assert.assertEquals(res.get(0).getName(), "tom");
+		assertEquals(1, res.size());
+		assertEquals(res.get(0).getName(), "tom");
 	}
 
 	@Test(expected = ObjectQueryException.class)
@@ -71,8 +72,8 @@ public class TestPersistentSubQuery {
 		doubSubQuery.notEq(doubSubQuery.target().getOwner(), query.target().getMom());
 
 		List<Person> res = (List<Person>) JDOObjectQuery.execute(query, peristenceManager);
-		Assert.assertEquals(1, res.size());
-		Assert.assertEquals(res.get(0).getName(), "tom");
+		assertEquals(1, res.size());
+		assertEquals(res.get(0).getName(), "tom");
 
 	}
 
@@ -89,8 +90,8 @@ public class TestPersistentSubQuery {
 		query.eq(target.getMom(), subQuery1);
 
 		List<Person> res = (List<Person>) JDOObjectQuery.execute(query, peristenceManager);
-		Assert.assertEquals(1, res.size());
-		Assert.assertEquals(res.get(0).getName(), "tom");
+		assertEquals(1, res.size());
+		assertEquals(res.get(0).getName(), "tom");
 
 	}
 
@@ -104,10 +105,10 @@ public class TestPersistentSubQuery {
 		query.prj(subQuery);
 
 		List<Person> res = (List<Person>) JDOObjectQuery.execute(query, peristenceManager);
-		Assert.assertEquals(3, res.size());
-		Assert.assertEquals(res.get(0), null);
-		Assert.assertEquals(res.get(1), null);
-		Assert.assertEquals(res.get(1), null);
+		assertEquals(3, res.size());
+		assertEquals(res.get(0), null);
+		assertEquals(res.get(1), null);
+		assertEquals(res.get(1), null);
 
 	}
 
