@@ -13,10 +13,9 @@ import org.objectquery.UpdateQuery;
 
 public class JDOQueryEngine extends QueryEngine<PersistenceManager> {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <RET extends List<?>> RET execute(SelectQuery<?> query, PersistenceManager engineSession) {
-		return (RET) JDOObjectQuery.execute(query, engineSession);
+	public List<?> execute(SelectQuery<?> query, PersistenceManager engineSession) {
+		return (List<?>) JDOObjectQuery.execute(query, engineSession);
 	}
 
 	@Override
@@ -35,9 +34,8 @@ public class JDOQueryEngine extends QueryEngine<PersistenceManager> {
 	}
 
 	@Override
-	public <RET extends List<M>, M> RET execute(SelectMapQuery<?, M> query, PersistenceManager engineSession) {
-		// TODO Auto-generated method stub
-		return null;
+	public <M> List<M> execute(SelectMapQuery<?, M> query, PersistenceManager engineSession) {
+		return JDOObjectQuery.execute(query, engineSession);
 	}
 
 }
